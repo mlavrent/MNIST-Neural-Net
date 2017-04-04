@@ -1,4 +1,5 @@
 from datagenerator import _DataGenerator
+import numpy as np
 
 class NeuralNet(object):
     def __init__(self, inputLayerSize, h1LayerSize, h2LayerSize, outputLayerSize):
@@ -27,5 +28,12 @@ class NeuralNet(object):
         
         return self.outVal
 
-    def sigmoid(x):
-        return 1/(1+np.exp(-x)
+    def sigmoid(self, x):
+        return 1/(1+np.exp(-x))
+
+
+dg = _DataGenerator()
+inputs, outputs = dg.getInputsOutputs()
+
+nn = NeuralNet(784, 15, 15, 10)
+print(nn.forwardProp(inputs))
