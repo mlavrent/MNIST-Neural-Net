@@ -16,3 +16,16 @@ class NeuralNet(object):
         self.h1Val = np.zeros(h1LayerSize)
         self.h2Val = np.zeros(h2LayerSize)
         self.outVal = np.zeros(outputLayerSize)
+
+    def forwardProp(self, inValues):
+        self.inputVal = inValues
+        
+        self.h1Val = self.sigmoid(np.dot(self.inputVal, self.i_h1_weight))
+        self.h2Val = self.sigmoid(np.dot(self.h1Val, self.h1_h2_weight))
+        
+        self.outVal = self.sigmoid(np.dot(self.h2Val, self.h2_o_weight))
+        
+        return self.outVal
+
+    def sigmoid(x):
+        return 1/(1+np.exp(-x)
