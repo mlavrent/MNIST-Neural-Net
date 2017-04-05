@@ -45,27 +45,41 @@ class NeuralNet(object):
 
         #Iterate over h2_o_weights
         dC_dh2o_w = np.zeros((self.h2LayerSize, self.outputLayerSize))
+        delta_h2_o = np.zeros(self.outputLayerSize)
+        
         for o in range(self.outputLayerSize):
+            delta_h2_o[o] = -(rOutValues[o] - aOutValues[o]) * aOutValues[o]*(1-aOutValues[o])
             for h2 in range(self.h2LayerSize):
-                dC_dh2o_w[h2][o] = -(rOutValues[o] - aOutValues[o]) * aOutValues[o]*(1-aOutValues[o]) * self.h2Val[h2]
+                dC_dh2o_w[h2][o] = delta_h2_o[o] * self.h2Val[h2]
 
         #Iterate over h1_h2_weights
         dC_dh1h2_w = np.zeros((self.h1LayerSize, self.h2LayerSize))
+        delta_h1_h2 = np.zeros(self.h2LayerSize)
+        
         for h2 in range(self.h2LayerSize):
+            for o in range(self.outputLayerSize):
+                delta_h1_h2[h2] += delta_h2_o[o]*self.h2_o_weight[h2][o] * self.h2Val[h2]*(1-self.h2Val[h2])
+                
             for h1 in range(self.h1LayerSize):
-                dC_dh1h2_w[h1][h2] = dC_dh2 * self.h2Val[h2]*(1-self.h2Val[h2]) * self.h1Val[h1]
-                #TODO: calculate dC_dh2
+                dC_dh1h2_w[h1][h2] = delta_h1_h2[h2] * self.h1Val[h1]
 
         #Iterate over i_h1_weights
         dC_dih1_w = np.zeros((self.inputLayerSize, self.h1LayerSize))
+        delta_i_h1 = np.zeros(self.h1LayerSize)
+        
         for h1 in range(self.h1LayerSize):
+            for h2 in range(self.h2LayerSize):
+                delta_i_h1[h1] += delta_h1_h2[h2]*self.h1_h2_weight[h1][h2] * self.h1Val[h1]*(1-self.h1Val[h1])
+                
             for i in range(self.inputLayerSize):
-                dC_dih1_w[i][h1] = dC_dh1 * self.h1Val[h1]*(1-self.h1Val[h1]) * self.inputVal[i]
-                #TODO: calculate dC_dh1
+                dC_dih1_w[i][h1] = delta_i_h1[h1] * self.inputVal[i]
 
         return {"i_to_h1": dC_dih1_w,
                 "h1_to_h2": dC_dh1h2_w,
                 "h2_to_o": dC_dh2o_w}
+    
+    #def train(self, inputData, labelData):
+        
 
 
 dg = _DataGenerator()
@@ -73,4 +87,6 @@ inputs, outputs = dg.getInputsOutputs()
 
 nn = NeuralNet(784, 15, 15, 10)
 
-nn.backProp(inputs[0], outputs[0])
+changes = nn.backProp(inputs[0], outputs[0])
+
+print(changes["i_to_h1"])
