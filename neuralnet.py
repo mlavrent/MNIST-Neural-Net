@@ -97,6 +97,6 @@ trainInputs, trainOutputs, testInputs, testOutputs = dg.getInputsOutputs()
 
 nn = NeuralNet(784, 15, 15, 10)
 
-changes = nn.backProp(inputs[0], outputs[0])
+changes = nn.backProp(trainInputs[0], trainOutputs[0])
 
-print(changes["i_to_h1"])
+print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))
