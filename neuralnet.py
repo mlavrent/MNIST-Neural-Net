@@ -100,6 +100,9 @@ class NeuralNet(object):
             self.h1_h2_weight -= self.LEARNING_RATE * changes["h1_to_h2"]
             self.h2_o_weight -= self.LEARNING_RATE * changes["h2_to_o"]
 
+            if d % (inputData.shape[0]/100) == 0:
+                print(str(d/inputData.shape[0]*100) + "%")
+
 
 start = datetime.datetime.now()
 
