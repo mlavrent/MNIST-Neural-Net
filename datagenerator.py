@@ -11,11 +11,11 @@ class _DataGenerator(object):
         labels = data[:,0]
         data = np.delete(data, 0, 1)
 
-        data = np.split(data, data.shape[0]*.75)[0]
-        labels = np.split(labels, labels.shape[0]*.75)[0]
+        data = np.split(data, [(int)(data.shape[0]*.75)])[0]
+        labels = np.split(labels, [(int)(labels.shape[0]*.75)])[0]
 
-        testData = np.split(data, data.shape[0]*.75)[1]
-        testLabels = np.split(labels, labels.shape[0]*.75)[1]
+        testData = np.split(data, [(int)(data.shape[0]*.75)])[1]
+        testLabels = np.split(labels, [(int)(labels.shape[0]*.75)])[1]
 
         return data, labels, testData, testLabels
     
