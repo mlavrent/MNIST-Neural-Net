@@ -83,7 +83,7 @@ class NeuralNet(object):
 
 
 dg = _DataGenerator()
-inputs, outputs = dg.getInputsOutputs()
+trainInputs, trainOutputs, testInputs, testOutputs = dg.getInputsOutputs()
 
 nn = NeuralNet(784, 15, 15, 10)
 

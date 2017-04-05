@@ -11,7 +11,13 @@ class _DataGenerator(object):
         labels = data[:,0]
         data = np.delete(data, 0, 1)
 
-        return labels, data
+        data = np.split(data, data.shape[0]*.75)[0]
+        labels = np.split(labels, labels.shape[0]*.75)[0]
+
+        testData = np.split(data, data.shape[0]*.75)[1]
+        testLabels = np.split(labels, labels.shape[0]*.75)[1]
+
+        return data, labels, testData, testLabels
     
     def scaleData(self, data):
         return data/255
@@ -25,8 +31,12 @@ class _DataGenerator(object):
         return outputs
         
     def getInputsOutputs(self):
-        labels, data = self.genTrainData()
-        inputs = self.scaleData(data)
-        outputs = self.labelsToOutputs(labels)
+        data, labels, testData, testLabels = self.genTrainData()
+        
+        trainInputs = self.scaleData(data)
+        trainOutputs = self.labelsToOutputs(labels)
 
-        return inputs, outputs
+        testInputs = self.scaleData(testData)
+        testOutputs = self.labelsToOutputs(testLabels)
+
+        return trainInputs, trainOutputs, testInputs, testOutputs
