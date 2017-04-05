@@ -2,6 +2,8 @@ from datagenerator import _DataGenerator
 import numpy as np
 
 class NeuralNet(object):
+    LEARNING_RATE = 0.5
+    
     def __init__(self, inputLayerSize, h1LayerSize, h2LayerSize, outputLayerSize):
 
         self.inputLayerSize = inputLayerSize
@@ -88,15 +90,24 @@ class NeuralNet(object):
                 "h1_to_h2": dC_dh1h2_w,
                 "h2_to_o": dC_dh2o_w}
     
-    #def train(self, inputData, labelData):
-        
+    def train(self, inputData, labelData):
+
+        for d in range(inputData.shape[0]):
+            changes = self.backProp(inputData[d], labelData[d])
+
+            self.i_h1_weight -= self.LEARNING_RATE * changes["i_to_h1"]
+            self.h1_h2_weight -= self.LEARNING_RATE * changes["h1_to_h2"]
+            self.h2_o_weight -= self.LEARNING_RATE * changes["h2_to_o"]
 
 
 dg = _DataGenerator()
 trainInputs, trainOutputs, testInputs, testOutputs = dg.getInputsOutputs()
 
+print("Data Loaded")
+
 nn = NeuralNet(784, 15, 15, 10)
 
-changes = nn.backProp(trainInputs[0], trainOutputs[0])
-
 print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))
+nn.train(trainInputs, trainOutputs)
+print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))
+
