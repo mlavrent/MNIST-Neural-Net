@@ -9,9 +9,9 @@ class NeuralNet(object):
         self.h2LayerSize = h2LayerSize
         self.outputLayerSize = outputLayerSize
 
-        self.i_h1_weight = np.random.rand(inputLayerSize, h1LayerSize)
-        self.h1_h2_weight = np.random.rand(h1LayerSize, h2LayerSize)
-        self.h2_o_weight = np.random.rand(h2LayerSize, outputLayerSize)
+        self.i_h1_weight = np.random.rand(inputLayerSize, h1LayerSize)*2 - 1
+        self.h1_h2_weight = np.random.rand(h1LayerSize, h2LayerSize)*2 - 1
+        self.h2_o_weight = np.random.rand(h2LayerSize, outputLayerSize)*2 - 1
 
         self.inputVal = np.zeros(inputLayerSize)
         self.h1Val = np.zeros(h1LayerSize)
