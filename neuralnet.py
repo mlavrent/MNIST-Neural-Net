@@ -32,13 +32,23 @@ class NeuralNet(object):
         return 1/(1+np.exp(-x))
 
     def costFunction(self, aOutValues, rOutValues):
-        # aOutValues - [. . .] (outputLayerSize)
-        # rOutValues - [. . .] (outputLayerSize)
+        # aOutValues - [. . .] (outputLayerSize) - actual obtained values (after forward prop)
+        # rOutValues - [. . .] (outputLayerSize) - the real values (from data set labels)
         total = 0
         for i in range(self.outputLayerSize):
             total += 0.5*(rOutValues[i] - aOutValues[i])**2
 
         return total
+
+    def averageCost(self, aOutValues, rOutValues):
+        # aOutValues - [[. . .]
+        #               [. . .]
+        #               [. . .]] (num values down, outputLayerSize across)
+        total = 0
+        for v in range(aOutValues.shape[0]):
+            total += self.costFunction(aOutValues[v], rOutValues[v])
+
+        return total/aOutValues.shape[0]
 
     def backProp(self, inValues, rOutValues):
         aOutValues = self.forwardProp(inValues)
