@@ -1,5 +1,6 @@
 from datagenerator import _DataGenerator
 import numpy as np
+import datetime
 
 class NeuralNet(object):
     LEARNING_RATE = 0.5
@@ -100,10 +101,15 @@ class NeuralNet(object):
             self.h2_o_weight -= self.LEARNING_RATE * changes["h2_to_o"]
 
 
+start = datetime.datetime.now()
+
 dg = _DataGenerator()
 trainInputs, trainOutputs, testInputs, testOutputs = dg.getInputsOutputs()
 
-print("Data Loaded")
+end = datetime.datetime.now()
+
+
+print("Data Loaded in " + str(round((end-start).total_seconds(),1)) + " seconds")
 
 nn = NeuralNet(784, 15, 15, 10)
 
