@@ -10,10 +10,9 @@ The program also provides several helper classes - one loads and prepares the tr
 The MNIST set is too large to include here on Github; as a result, the file structure to use the images and to train the data is shown here.
 
 Digit Recognizer    
-|   train-data.csv
-└───Images
-|
-└───NeuralNets
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;train-data.csv    
+└───Images        
+└───NeuralNets    
 
 All of the code found in this repository should be located in the `NeuralNets` folder. The `Images` folder is for other images you may want to test yourself. The image loader is able to take images larger than 28x28 (it will scale them down), but it is suggested to provide 28x28 .png images (which can be made in MS Paint).
 
