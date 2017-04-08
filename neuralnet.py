@@ -107,7 +107,7 @@ class NeuralNet(object):
 
 start = datetime.datetime.now()
 
-dg = _DataGenerator()
+dg = DataGenerator()
 trainInputs, trainOutputs, testInputs, testOutputs = dg.getInputsOutputs()
 
 end = datetime.datetime.now()
@@ -121,5 +121,6 @@ print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))
 nn.train(trainInputs, trainOutputs)
 print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))
 
-print(nn.forwardProp(
+imgC = ImageConverter()
+print(nn.forwardProp(imgC.loadImageAsArray("../Images/four.png")))
 
