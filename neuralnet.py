@@ -9,6 +9,7 @@ class NeuralNet(object):
     
     def __init__(self, inputLayerSize, h1LayerSize, h2LayerSize, outputLayerSize, loadWeights=False):
         self.wsl = WeightSaverLoader()
+        np.seterr(over='ignore')
         
         self.inputLayerSize = inputLayerSize
         self.h1LayerSize = h1LayerSize
@@ -36,6 +37,11 @@ class NeuralNet(object):
 
     def saveWeights(self):
         self.wsl.saveWeights("weightData/", self.i_h1_weight, self.h1_h2_weight, self.h2_o_weight)
+
+    def categorizeImage(self, imgArray):
+        output = self.forwardProp(imgArray)
+
+        return np.argmax(output)
 
     def forwardProp(self, inValues):
         self.inputVal = inValues
@@ -132,9 +138,9 @@ end = datetime.datetime.now()
 
 
 print("Data Loaded in " + str(round((end-start).total_seconds(),1)) + " seconds")
-
+'''
 nn = NeuralNet(784, 15, 15, 10, loadWeights=True)
-
+'''
 print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))
 nn.train(trainInputs, trainOutputs)
 print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))'''
@@ -142,8 +148,10 @@ print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))'''
 imgC = ImageConverter()
 
 np.set_printoptions(suppress=True)
-four = 100*nn.forwardProp(imgC.loadImageAsArray("../Images/four.png"))
-print(100*nn.forwardProp(imgC.loadImageAsArray("../Images/four.png")))
+
+
+digit = nn.categorizeImage(imgC.loadImageAsArray("../Images/one.png"))
+print(digit)
 
 nn.saveWeights()
 
