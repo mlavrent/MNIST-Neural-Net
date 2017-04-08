@@ -1,26 +1,41 @@
 from datagenerator import DataGenerator
 from imageconverter import ImageConverter
+from weightsaver import WeightSaverLoader
 import numpy as np
 import datetime
 
 class NeuralNet(object):
     LEARNING_RATE = 0.5
     
-    def __init__(self, inputLayerSize, h1LayerSize, h2LayerSize, outputLayerSize):
-
+    def __init__(self, inputLayerSize, h1LayerSize, h2LayerSize, outputLayerSize, loadWeights=False):
+        self.wsl = WeightSaverLoader()
+        
         self.inputLayerSize = inputLayerSize
         self.h1LayerSize = h1LayerSize
         self.h2LayerSize = h2LayerSize
         self.outputLayerSize = outputLayerSize
 
-        self.i_h1_weight = np.random.rand(inputLayerSize, h1LayerSize)*2 - 1
-        self.h1_h2_weight = np.random.rand(h1LayerSize, h2LayerSize)*2 - 1
-        self.h2_o_weight = np.random.rand(h2LayerSize, outputLayerSize)*2 - 1
+        if not(loadWeights):
+            self.i_h1_weight = np.random.rand(inputLayerSize, h1LayerSize)*2 - 1
+            self.h1_h2_weight = np.random.rand(h1LayerSize, h2LayerSize)*2 - 1
+            self.h2_o_weight = np.random.rand(h2LayerSize, outputLayerSize)*2 - 1
+        else:
+            weights = self.wsl.loadWeights("weightData/" + str(inputLayerSize) + "_" + str(h1LayerSize) + \
+                            "_" + str(h2LayerSize) + "_" + str(outputLayerSize) + ".npz", \
+                                           [inputLayerSize, h1LayerSize, h2LayerSize, outputLayerSize])
+
+            self.i_h1_weight = weights[0]
+            self.h1_h2_weight = weights[1]
+            self.h2_o_weight = weights[2]
+            
 
         self.inputVal = np.zeros(inputLayerSize)
         self.h1Val = np.zeros(h1LayerSize)
         self.h2Val = np.zeros(h2LayerSize)
         self.outVal = np.zeros(outputLayerSize)
+
+    def saveWeights(self):
+        self.wsl.saveWeights("weightData/", self.i_h1_weight, self.h1_h2_weight, self.h2_o_weight)
 
     def forwardProp(self, inValues):
         self.inputVal = inValues
@@ -72,7 +87,8 @@ class NeuralNet(object):
         
         for h2 in range(self.h2LayerSize):
             for o in range(self.outputLayerSize):
-                delta_h1_h2[h2] += delta_h2_o[o]*self.h2_o_weight[h2][o] * self.h2Val[h2]*(1-self.h2Val[h2])
+                delta_h1_h2[h2] += delta_h2_o[o]*self.h2_o_weight[h2][o] * \
+                                   self.h2Val[h2]*(1-self.h2Val[h2])
                 
             for h1 in range(self.h1LayerSize):
                 dC_dh1h2_w[h1][h2] = delta_h1_h2[h2] * self.h1Val[h1]
@@ -83,7 +99,8 @@ class NeuralNet(object):
         
         for h1 in range(self.h1LayerSize):
             for h2 in range(self.h2LayerSize):
-                delta_i_h1[h1] += delta_h1_h2[h2]*self.h1_h2_weight[h1][h2] * self.h1Val[h1]*(1-self.h1Val[h1])
+                delta_i_h1[h1] += delta_h1_h2[h2]*self.h1_h2_weight[h1][h2] * \
+                                  self.h1Val[h1]*(1-self.h1Val[h1])
                 
             for i in range(self.inputLayerSize):
                 dC_dih1_w[i][h1] = delta_i_h1[h1] * self.inputVal[i]
@@ -107,7 +124,8 @@ class NeuralNet(object):
 
 start = datetime.datetime.now()
 
-dg = DataGenerator()
+#Uncomment to do further training on the Neural Network
+'''dg = DataGenerator()
 trainInputs, trainOutputs, testInputs, testOutputs = dg.getInputsOutputs()
 
 end = datetime.datetime.now()
@@ -115,12 +133,17 @@ end = datetime.datetime.now()
 
 print("Data Loaded in " + str(round((end-start).total_seconds(),1)) + " seconds")
 
-nn = NeuralNet(784, 15, 15, 10)
+nn = NeuralNet(784, 15, 15, 10, loadWeights=True)
 
 print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))
 nn.train(trainInputs, trainOutputs)
-print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))
+print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))'''
 
 imgC = ImageConverter()
-print(nn.forwardProp(imgC.loadImageAsArray("../Images/four.png")))
+
+np.set_printoptions(suppress=True)
+four = 100*nn.forwardProp(imgC.loadImageAsArray("../Images/four.png"))
+print(100*nn.forwardProp(imgC.loadImageAsArray("../Images/four.png")))
+
+nn.saveWeights()
 
