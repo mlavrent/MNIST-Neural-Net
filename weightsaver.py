@@ -37,9 +37,3 @@ class WeightSaverLoader(object):
         loadedFile.close()
         
         return allWeights
-          
-wsl = WeightSaverLoader()
-
-wsl.saveWeights("weightData/", np.array([[1,2], [2,3], [4,5]]), np.array([[5], [4]]))
-
-a = wsl.loadWeights("weightData/3_2_1.npz", [3, 2, 1])
