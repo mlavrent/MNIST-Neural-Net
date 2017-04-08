@@ -30,9 +30,4 @@ class ImageConverter(object):
 
         return pixArray
 
-im = ImageConverter()
-a = im.imageToNPArray("../Images/four.png")
-
-a = im.invertImage(a)
-
 
