@@ -15,7 +15,12 @@ class ImageConverter(object):
 
         return pixels
 
+    def invertImage(self, pixArray):
+        return 255 - pixArray
+
 im = ImageConverter()
 a = im.imageToNPArray("../Images/four.png")
+
+a = im.invertImage(a)
 
 
