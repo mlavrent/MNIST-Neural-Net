@@ -1,7 +1,7 @@
 import csv
 import numpy as np
 
-class _DataGenerator(object):
+class DataGenerator(object):
     def genTrainData(self):
         data = []
         with open('../train-data.csv', 'r') as f:

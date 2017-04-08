@@ -1,4 +1,5 @@
-from datagenerator import _DataGenerator
+from datagenerator import DataGenerator
+from imageconverter import ImageConverter
 import numpy as np
 import datetime
 
@@ -119,4 +120,6 @@ nn = NeuralNet(784, 15, 15, 10)
 print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))
 nn.train(trainInputs, trainOutputs)
 print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))
+
+print(nn.forwardProp(
 
