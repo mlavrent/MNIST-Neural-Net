@@ -28,6 +28,6 @@ class ImageConverter(object):
         pixArray = self.imageToNPArray(path)
         pixArray = self.invertImage(pixArray)
 
-        return pixArray
+        return pixArray/255
 
 
