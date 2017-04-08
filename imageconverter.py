@@ -2,9 +2,15 @@ from PIL import Image
 import numpy as np
 
 class ImageConverter(object):
-    
+
+    def resizeImage(self, image):
+        return image.resize((28,28), PIL.Image.LANCZOS)
+        
     def imageToNPArray(self, path):
         im = Image.open(path)
+
+        if im.size != (28,28):
+            im = self.resizeImage(im)
         
         rPix = np.array(list(im.getdata(band=0)))
         gPix = np.array(list(im.getdata(band=1)))
@@ -17,6 +23,12 @@ class ImageConverter(object):
 
     def invertImage(self, pixArray):
         return 255 - pixArray
+
+    def loadImageAsArray(self, path):
+        pixArray = self.imageToNPArray(path)
+        pixArray = self.invertImage(pixArray)
+
+        return pixArray
 
 im = ImageConverter()
 a = im.imageToNPArray("../Images/four.png")
