@@ -153,5 +153,5 @@ np.set_printoptions(suppress=True)
 digit = nn.categorizeImage(imgC.loadImageAsArray("../Images/one.png"))
 print(digit)
 
-nn.saveWeights()
+#nn.saveWeights()
 
