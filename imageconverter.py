@@ -29,7 +29,7 @@ class ImageConverter(object):
         
         bwArray = [(255 if p > 127 else 0) for p in pixArray]
 
-        return bwArray
+        return np.array(bwArray)
 
     def loadImageAsArray(self, path):
         pixArray = self.imageToNPArray(path)
