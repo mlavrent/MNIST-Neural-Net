@@ -24,9 +24,17 @@ class ImageConverter(object):
     def invertImage(self, pixArray):
         return 255 - pixArray
 
+    def convToBlackWhiteImage(self, pixArray):
+        #pixArray should be 1 dimensional
+        
+        bwArray = [(255 if p > 127 else 0) for p in pixArray]
+
+        return bwArray
+
     def loadImageAsArray(self, path):
         pixArray = self.imageToNPArray(path)
         pixArray = self.invertImage(pixArray)
+        pixArray = self.convToBlackWhiteImage(pixArray)
 
         return pixArray/255
 
