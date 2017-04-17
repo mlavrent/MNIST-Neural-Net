@@ -131,9 +131,9 @@ class NeuralNet(object):
 start = datetime.datetime.now()
 
 #Uncomment to do further training on the Neural Network
-'''dg = DataGenerator()
+dg = DataGenerator()
 trainInputs, trainOutputs, testInputs, testOutputs = dg.getInputsOutputs()
-
+'''
 end = datetime.datetime.now()
 
 
@@ -149,9 +149,19 @@ imgC = ImageConverter()
 
 np.set_printoptions(suppress=True)
 
+totalHits = 0
+totalTries = 0
 
-digit = nn.categorizeImage(imgC.loadImageAsArray("../Images/one.png"))
-print(digit)
+for i in range(testInputs.shape[0]):
+    guess = nn.categorizeImage(testInputs[i])
+    actual = np.argmax(testOutputs[i])
+    
+    if guess == actual:
+        totalHits += 1
+        
+    totalTries += 1
+
+print(totalHits/totalTries * 100)
 
 #nn.saveWeights()
 
