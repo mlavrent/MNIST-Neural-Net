@@ -131,8 +131,8 @@ class NeuralNet(object):
 start = datetime.datetime.now()
 
 #Uncomment to do further training on the Neural Network
-dg = DataGenerator()
-trainInputs, trainOutputs, testInputs, testOutputs = dg.getInputsOutputs()
+'''dg = DataGenerator()
+trainInputs, trainOutputs, testInputs, testOutputs = dg.getInputsOutputs()'''
 '''
 end = datetime.datetime.now()
 
@@ -146,10 +146,11 @@ nn.train(trainInputs, trainOutputs)
 print(nn.averageCost(nn.forwardProp(testInputs), testOutputs))'''
 
 imgC = ImageConverter()
+arr = imgC.loadImageAsArray("../Images/roham.png")
+print(nn.categorizeImage(arr))
+#np.set_printoptions(suppress=True)
 
-np.set_printoptions(suppress=True)
-
-totalHits = 0
+'''totalHits = 0
 totalTries = 0
 
 for i in range(testInputs.shape[0]):
@@ -163,5 +164,5 @@ for i in range(testInputs.shape[0]):
 
 print(totalHits/totalTries * 100)
 
-#nn.saveWeights()
+#nn.saveWeights()'''
 

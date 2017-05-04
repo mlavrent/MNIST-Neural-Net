@@ -4,7 +4,7 @@ import numpy as np
 class ImageConverter(object):
 
     def resizeImage(self, image):
-        return image.resize((28,28), PIL.Image.LANCZOS)
+        return image.resize((28,28), Image.LANCZOS)
         
     def imageToNPArray(self, path):
         im = Image.open(path)
